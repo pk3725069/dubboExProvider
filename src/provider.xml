@@ -23,7 +23,12 @@
 	<dubbo:protocol name="dubbo" port="20880" />
 
 	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service interface="com.dubbo.HelloService"
+	<dubbo:service cluster="failover"  interface="com.dubbo.HelloService"
 		ref="helloService" />
+		
+	
 
+
+
+	
 </beans>
