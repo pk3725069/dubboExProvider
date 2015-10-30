@@ -7,8 +7,6 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd
         ">
 
-	<!-- 具体的实现bean -->
-	<bean id="helloService" class="com.dubbo.Impl.HelloServiceImpl" />
 
 	<!-- 提供方应用信息，用于计算依赖关系 -->
 	<dubbo:application name="xixi_provider" />
@@ -17,18 +15,19 @@
 		/> -->
 
 	<!-- 使用zookeeper注册中心暴露服务地址 -->
-<!-- 	<dubbo:registry address="zookeeper://127.0.0.1:2181" /> -->
+ 	<dubbo:registry address="zookeeper://127.0.0.1:2181" /> 
 
 	<!-- 用dubbo协议在20880端口暴露服务 -->
 	<dubbo:protocol name="dubbo" port="20880" />
-
-	<!-- 声明需要暴露的服务接口  -->
-	<dubbo:service cluster="failsafe" retries="2" interface="com.dubbo.HelloService"  registry="N/A"
-		ref="helloService" >
-		<!-- 在指定的方法上增加均衡负载  -->
-		    <dubbo:method name="sayHello" loadbalance="roundrobin"/>
-	</dubbo:service>
-		
+	
+	
+	<!-- 服务分组    一个接口有多种实现  -->
+	<dubbo:service group="feedback" ref="helloService" interface="com.dubbo.HelloService" />
+	<dubbo:service group="member" ref="hello2Service" interface="com.dubbo.HelloService" />
+	
+	<!-- 具体的实现bean  两个不同的实现-->
+	<bean id="helloService" class="com.dubbo.Impl.HelloServiceImpl" />
+	<bean id="hello2Service" class="com.dubbo.Impl.HelloService2Impl" />
 	
 
 
