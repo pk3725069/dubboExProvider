@@ -15,22 +15,21 @@
 		/> -->
 
 	<!-- 使用zookeeper注册中心暴露服务地址 -->
- 	<dubbo:registry address="zookeeper://127.0.0.1:2181" /> 
+	<dubbo:registry address="zookeeper://127.0.0.1:2181" /> 
 
 	<!-- 用dubbo协议在20880端口暴露服务 -->
-	<dubbo:protocol name="dubbo" port="20880" />
-	
-	
-	<!-- 服务分组    一个接口有多种实现  -->
-	<dubbo:service group="feedback" ref="helloService" interface="com.dubbo.HelloService" />
-	<dubbo:service group="member" ref="hello2Service" interface="com.dubbo.HelloService" />
-	
-	<!-- 具体的实现bean  两个不同的实现-->
-	<bean id="helloService" class="com.dubbo.Impl.HelloServiceImpl" />
-	<bean id="hello2Service" class="com.dubbo.Impl.HelloService2Impl" />
-	
+	<dubbo:protocol name="dubbo" port="20880" />  
 
-
-
+	<!-- 参数回调 -->
+	<bean id="callbackService" class="com.dubbo.Impl.CallbackServiceImpl" />
+	
+	<!-- 配置文件中声明哪个参数是callback类型 -->
+	<dubbo:service interface="com.dubbo.CallbackService" ref="callbackService" connections="1" callbacks="1000">
+	    <dubbo:method name="addListener">
+	        <dubbo:argument index="0" callback="true" />
+	        <!--也可以通过指定类型的方式-->
+	        <!--<dubbo:argument type="com.dubbo.CallbackListener" callback="true" />-->
+	    </dubbo:method>
+	</dubbo:service>
 	
 </beans>

@@ -3,7 +3,7 @@ package com.dubbo.Impl;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.dubbo.HelloService;
+
 
 public class provider {
 
